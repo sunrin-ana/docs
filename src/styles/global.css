@@ -1,0 +1,34 @@
+@layer base, starlight, theme, components, utilities;
+
+@import '@astrojs/starlight-tailwind';
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities);
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Nothing+You+Could+Do&family=Ubuntu+Sans:ital,wght@0,100..800;1,100..800&display=swap');
+
+@theme {
+  --font-sans: 'Pretendard';
+  --font-mono: 'JetBrains Mono';
+
+  --color-accent-100: #EBEDF3;
+  --color-accent-200: #D6DAE6;
+  --color-accent-300: #ADB6CD;
+  --color-accent-400: #8591B4;
+  --color-accent-500: #5C6D9B;
+  --color-accent-600: #334882;
+  --color-accent-700: #293A68;
+  --color-accent-800: #1F2B4E;
+  --color-accent-900: #141D34;
+  /* 살려줘.. -15기 부장- */
+  --color-gray-50: #F0F0F2;
+  --color-gray-100: #E1E3E6;
+  --color-gray-200: #C6C7CC;
+  --color-gray-300: #ACAEB3;
+  --color-gray-400: #919399;
+  --color-gray-500: #787A80;
+  --color-gray-600: #5F6166;
+  --color-gray-700: #47484D;
+  --color-gray-800: #2F3033;
+  --color-gray-900: #18181A;
+  --color-gray-950: #0C0C0D;
+}
