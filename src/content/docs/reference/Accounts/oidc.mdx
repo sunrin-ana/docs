@@ -1,0 +1,17 @@
+---
+title: OpenID Connect는 어떻게 작동할까?
+description: OpenID Connect가 무엇인지, 그리고 그것이 어떻게 작동하는지에 대한 문서
+lastUpdated: 2025-01-18
+prev: false
+next: false
+draft: true
+---
+OIDC(OpenID Connect)는 사용자가 누구인지를 증명하는 [OAuth 2.0](./oauth2.mdx)를 확장시킨 인증 프로토콜이에요.
+
+## OIDC의 주요 개념
+![OIDC 주요 개념](../../../../assets/docs/reference/accounts/oidc_concept.png)
+- ID 토큰(ID Token): 사용자의 신원 정보를 담고 있는 토큰이에요. (OAuth 2.0의 액세스 토큰과는 다름)
+- 사용자 정보(User Info): 사용자의 프로필 정보(이름, 이메일 등)를 담고 있는 데이터에요.
+- 클레임(Claims): ID 토큰이나 사용자 정보에 담기는 사용자에 대한 정보 조각이에요. (예: 이름, 이메일 등)
+- Relying Party(RP): 사용자의 신원 정보를 필요로 하는 애플리케이션이나 서비스에요. (OAuth 2.0의 클라이언트와 유사)
+- OpenID 제공자(OP): 사용자의 신원 정보를 관리하고 제공하는 인증 서버에요. (OAuth 2.0의 인증 서버와 유사)
