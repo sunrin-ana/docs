@@ -1,0 +1,118 @@
+---
+title: Golang Wrapper
+description: An Americano의 Golang Wrapper 사용법에 대한 문서
+---
+An Americano는 Golang Wrapper API를 제공하고 있어요.<br/>
+Golang Wrapper API를 사용하면 Golang 애플리케이션에서 An Americano의 기능을 쉽게 활용할 수 있어요.<br/>
+## 설치하기
+Golang Wrapper API를 사용하려면, 먼저 Go 모듈을 설치해야해요.<br/>
+다음 명령어를 사용하여 Go 모듈을 설치할 수 있어요:<br/>
+```bash
+go get github.com/sunrin-ana/anamericano-golang
+```
+
+## 사용법
+Golang Wrapper API를 사용하려면, 먼저 패키지를 임포트해야해요.<br/>
+```go
+import "github.com/sunrin-ana/anamericano-golang"
+```
+그 다음, An Americano 클라이언트를 생성할 수 있어요.<br/>
+```go
+var permissionClient = anamericano.NewClient(&anamericano.ContextTokenAuth{}, nil)
+```
+
+이제 클라이언트를 사용하여 An Americano의 기능을 호출할 수 있어요.<br/>
+
+### 권한 확인하기
+다음은 특정 주체가 객체에 대해 특정 관계를 가지고 있는지 확인하는 예제 코드에요:<br/>
+```go
+userToken := ... // 사용자 토근 받아오기
+
+ctx := anamericano.WithToken(r.Context(), userToken)
+
+resp, err := permissionClient.CheckPermission(ctx, &anamericano.PermissionCheckRequest{
+    SubjectType:     "user", // 주체 타입
+    SubjectID:       "아나줘요", // 주체 ID
+    Relation:        "viewer", // 관계
+    ObjectNamespace: "document", // 객체 네임스페이스
+    ObjectID:        "eungyolee-teukcom", // 객체 ID
+})
+```
+
+### 권한 업데이트하기
+
+#### 사용자 권한 업데이트
+```go
+resp, err := permissionClient.WritePermission(ctx, &anamericano.PermissionWriteRequest{
+    SubjectType:     "user", // 주체 타입
+    SubjectID:       "아나줘요", // 주체 ID
+    Relation:        "viewer", // 관계
+    ObjectNamespace: "document", // 객체 네임스페이스
+    ObjectID:        "eungyolee-teukcom", // 객체 ID
+})
+```
+
+#### 그룹 권한 업데이트
+```go
+perm, err := client.WritePermission(ctx, &anamericano.PermissionWriteRequest{
+    SubjectType:     "group", // 주체 타입
+    SubjectID:       "ana", // 주체 ID
+    SubjectRelation: stringPtr("member"), // 주체 관계
+    ObjectNamespace: "document", // 객체 네임스페이스
+    ObjectID:        "eungyolee-teukcom", // 객체 ID
+    Relation:        "viewer", // 관계
+})
+```
+
+### 권한 삭제하기
+```go
+err := client.DeletePermission(ctx, &anamericano.PermissionDeleteRequest{
+    ObjectNamespace: "document",
+    ObjectID:        "eungyolee-teukcom",
+    Relation:        "viewer",
+    SubjectType:     "user",
+    SubjectID:       "아나줘요",
+})
+```
+
+### 권한 읽기
+```go
+perms, err := client.ReadPermissions(ctx, &anamericano.PermissionReadRequest{
+	ObjectNameSpace: "document",
+	ObjectID:        "eungyolee-teukcom",
+})
+for _, p := range perms {
+    fmt.Printf("%s can %s\n", p.SubjectID, p.Relation)
+}
+```
+
+### 특정 권한 읽기
+다음은 특정 권한을 가진 모든 주체를 가져오는 예제에요:<br/>
+```go
+subjects, err := client.ExpandPermissions(ctx, &anamericano.PermissionExpendRequest{
+	ObjectNameSpace: "document",
+	ObjectID:        "eungyolee-teukcom",
+	Relation:        "viewer",
+})
+// 반환: ["user:아나줘요", "user:hanul", "group:ana#member"]
+
+for _, subject := range subjects {
+    fmt.Println(subject)
+}
+```
+
+### 주체가 접근할 수 있는 모든 객체 읽기
+```go
+docs, err := client.ListObjects(ctx, &anamericano.ListObjectsRequest{
+	ObjectNameSpace: "document",
+	Relation:        "viewer",
+	SubjectType:     "user",
+	SubjectID:       "eungyolee",
+})
+// Returns: ["eungyolee-teukcom", "eungyolee-babo", "eungyolee-kimanjja"]
+
+for _, docID := range docs {
+    fmt.Printf("Eungyolee can view: %s\n", docID)
+}
+```
+
